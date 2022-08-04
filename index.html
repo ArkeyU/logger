@@ -3,7 +3,7 @@
 <head>
   <style>
     body {
-      margin: 0 2em;
+      margin: 0 2em 40vh 2em;
       color: #cccccc;
       background-color: #161616;
       font: 20px/1.5 sans-serif;
@@ -43,11 +43,12 @@
     }
     
     const obs = new MutationObserver((mutations) => {
-      window.scrollBy({
-        top: document.body.scrollHeight,
-        left: 0,
-        behavior: 'smooth'
-      });
+      for (const mutation of mutations) {
+        if (mutation.addedNodes.length > 0) {
+          let newNode = mutation.addedNodes[0];
+          newNode.scrollIntoView({behavior: "smooth"});
+        }
+      }
     })
     
     obs.observe(textArea, {childList: true});
