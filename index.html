@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0 2em;
+      color: #cccccc;
+      background-color: #161616;
+      font: 20px/1.5 sans-serif;
+      font-weight: 100;
+    }
+    #textarea {
+      max-width: 1000px;
+      margin: auto;
+    }
+    #textarea div {
+      white-space: pre;
+      padding: 1.2vh 0;
+    }
+    #textarea div + div {
+      border-top: 1px dashed #aaaaaa;
+    }
+  </style>
+</head>
+<body>
+  <div id="textarea"></div>
+  <script>
+  (function() {
+    const textArea = document.getElementById("textarea");
+    let lastString = "";
+    const logger = async () => {
+      try {
+        cb = await navigator.clipboard.readText();
+        cb = cb.trim();
+        if (cb == lastString) return;
+        lastString = cb;
+        
+        const div = document.createElement("div");
+        div.innerText = cb;
+        textArea.appendChild(div);
+      } catch (e) {
+      }
+    }
+    
+    const obs = new MutationObserver((mutations) => {
+      window.scrollBy({
+        top: document.body.scrollHeight,
+        left: 0,
+        behavior: 'smooth'
+      });
+    })
+    
+    obs.observe(textArea, {childList: true});
+    
+    setInterval(logger, 500);
+  })()
+  </script>
+</body>
+</html>
